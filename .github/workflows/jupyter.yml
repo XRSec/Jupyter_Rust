@@ -4,6 +4,8 @@ on:
   watch:
     types: started
   workflow_dispatch:
+  repository_dispatch:
+    types: [Jupyter_Update_Action]
 
 jobs:
   Jupyter_Docker_Build:

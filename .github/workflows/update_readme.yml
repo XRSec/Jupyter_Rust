@@ -1,0 +1,44 @@
+name: update readme
+on:
+  schedule:
+    - cron:  '0 0 * * MON'
+  workflow_dispatch:
+
+jobs:
+  Update_Readme:
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Private Actions Checkout
+        uses: actions/checkout@v2.3.4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - 
+        name: Create local changes
+        run: |
+          wget -O README.md `curl -u ${{ secrets.DOCKERHUB_USERNAME }}:${{ secrets.TOKEN_GITHUB }} -s 'https://api.github.com/repos/google/evcxr/contents/evcxr_jupyter/README.md' | grep "download_url" | cut -d '"' -f 4`
+      - 
+        name: Commit files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "Add changes by Jupyter_Update_Action" -a
+      - 
+        name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.TOKEN_GITHUB }}
+          branch: ${{ github.ref }}
+
+  Repository_Dispatch:
+    needs: Update_Readme
+    runs-on: ubuntu-latest
+    steps:
+      - 
+        name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.TOKEN_GITHUB }}
+          event-type: Jupyter_Update_Action
