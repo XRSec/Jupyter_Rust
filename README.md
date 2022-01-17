@@ -8,11 +8,11 @@
 
 ```bash
 docker run -it -d \
---restart \
+--restart=always \
 --name jupyter \
 -v "/docker/jupyter:/root" \
 -p 8888:8888 \
-jupyter/scipy-notebook
+xrsec/jupyter_rust
 ```
 
 <hr>
