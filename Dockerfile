@@ -13,7 +13,7 @@ COPY jupyter.sh /
 
 RUN apt update -y \
     && apt upgrade -y \
-    && mkdir /home/jupyter/notebooks
+    && mkdir /home/jupyter/notebooks \
     && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential -y \
     && apt clean -y \
     && rustup component add rust-src \
