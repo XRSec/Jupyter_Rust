@@ -67,5 +67,5 @@ jobs:
           repository: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPO }}
       - 
         name: Hock Vercel Web Build
-        run: -
+        run: |
           curl -s ${{ secrets.WebHock }}
