@@ -1,9 +1,9 @@
 FROM rust:latest
 LABEL maintainer="xrsec"
 LABEL mail="troy@zygd.site"
-LABEL Github="https://github.com/XRSec/AWVS14-Update"
-LABEL org.opencontainers.image.source="https://github.com/XRSec/AWVS14-Update"
-LABEL org.opencontainers.image.title="AWVS14-Update"
+LABEL Github="https://github.com/XRSec/Jupyter_Rust"
+LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter_Rust"
+LABEL org.opencontainers.image.title="Jupyter_Rust"
 
 COPY jupyter.sh /
 
