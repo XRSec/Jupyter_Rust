@@ -21,7 +21,7 @@ RUN apt update -y \
     && chown jupyter:jupyter /home/jupyter/notebooks \
     && rm -rf /var/lib/apt/lists/* \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
-    && chmod +x /jupyter.sh \
+    && chmod +x /jupyter.sh
 
 USER 1000:1000
 
@@ -29,7 +29,7 @@ RUN evcxr_jupyter --install \
     && jupyter notebook --generate-config \
     && sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /home/jupyter/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /home/jupyter/.jupyter/jupyter_notebook_config.py \
-    && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/home/jupyter/notebooks'|g" /home/jupyter/.jupyter/jupyter_notebook_config.py \
+    && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/home/jupyter/notebooks'|g" /home/jupyter/.jupyter/jupyter_notebook_config.py
 
 ENTRYPOINT [ "/jupyter.sh"]
 
