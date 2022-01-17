@@ -1,8 +1,6 @@
 name: Jupyter Docker Build
 
 on:
-  watch:
-    types: started
   workflow_dispatch:
   repository_dispatch:
     types: [Jupyter_Update_Action]
