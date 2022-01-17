@@ -10,7 +10,7 @@ on:
         default: "20"
 
 jobs:
-  del_runs:
+  Del_runs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete workflow runs
