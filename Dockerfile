@@ -5,6 +5,8 @@ LABEL Github="https://github.com/XRSec/Jupyter_Rust"
 LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter_Rust"
 LABEL org.opencontainers.image.title="Jupyter_Rust"
 
+WORKDIR /root
+
 COPY jupyter.sh /
 
 RUN apt update -y \
@@ -14,6 +16,10 @@ RUN apt update -y \
     && rustup component add rust-src \
     && cargo install evcxr_jupyter \
     && evcxr_jupyter --install \
+    && jupyter notebook --generate-config \
+    && sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
+    && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
+    && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root'|g" /root/.jupyter/jupyter_notebook_config.py \
     && chmod +x /jupyter.sh
 
 ENTRYPOINT [ "/jupyter.sh"]
