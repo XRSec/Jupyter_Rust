@@ -24,7 +24,7 @@ RUN apt update -y \
     && jupyter notebook --generate-config \
     && sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
-    && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebooks'|g" /root/.jupyter/jupyter_notebook_config.py \
+    && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && chmod +x /jupyter.sh
 
 ENTRYPOINT [ "/jupyter.sh"]
