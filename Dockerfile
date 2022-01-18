@@ -5,7 +5,10 @@ LABEL Github="https://github.com/XRSec/Jupyter_Rust"
 LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter_Rust"
 LABEL org.opencontainers.image.title="Jupyter_Rust"
 
-WORKDIR /root
+RUN cd /root/ \
+    && cargo new notebook
+
+WORKDIR /root/notebook
 
 COPY jupyter.sh /
 
