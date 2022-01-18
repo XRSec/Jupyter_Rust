@@ -1,6 +1,6 @@
 # Jupyter Rust
 
-![version](https://img.shields.io/badge/Date-2022_01_17-da282a) [![Docker Automated Build](https://img.shields.io/docker/automated/xrsec/jupyter_rust?label=Build&logo=docker&style=flat-square)](https://hub.docker.com/r/xrsec/jupyter_rust) [![Jupyter Docker Build](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml/badge.svg)](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml) [![version](https://img.shields.io/badge/From-google/evcxr-da282a)](https://github.com/google/evcxr)
+![version](https://img.shields.io/badge/Date-2022_01_18-da282a) [![Docker Automated Build](https://img.shields.io/docker/automated/xrsec/jupyter_rust?label=Build&logo=docker&style=flat-square)](https://hub.docker.com/r/xrsec/jupyter_rust) [![Jupyter Docker Build](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml/badge.svg)](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml) [![version](https://img.shields.io/badge/From-google/evcxr-da282a)](https://github.com/google/evcxr)
 
 - use [google/evcxr](https://github.com/google/evcxr)
 
@@ -10,14 +10,14 @@
 docker run -it -d \
 --restart=always \
 --name jupyter \
--v "/docker/jupyter:/home/jupyter" \
+-v "/docker/jupyter:/root" \
 -p 8888:8888 \
 xrsec/jupyter_rust
 
 # set password
 docker exec -it jupyter bash
 jupyter notebook password
-cat /home/jupyter/.jupyter/jupyter_notebook_config.json | grep password | cut -d '"' -f 4
+cat /root/.jupyter/jupyter_notebook_config.json | grep password | cut -d '"' -f 4
 exit
 # Please edit /docker/jupyter/.jupyter/jupyter_notebook_config.py & find # c.NotebookApp.password = ''
 # like argon2:$argon2id$v=19$m=10240,t=10,p=8$nadwnNYR9dgtditxunWZZg$+A5BGw7JriYU3Y2yOOw4YA
