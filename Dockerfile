@@ -18,14 +18,15 @@ RUN apt update -y \
     && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux -y \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
     && pip install jupyterlab \
-    && pip install jupyterlab-language-pack-zh-CN \
+    && pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
 
 RUN rustup component add rust-src \
     && cargo install evcxr_jupyter cargo-edit \
     && evcxr_jupyter --install \
-    && jupyter notebook --generate-config
+    && jupyter notebook --generate-config \
+    && jupyter contrib nbextension install
 
 RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
