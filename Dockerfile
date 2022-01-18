@@ -17,6 +17,8 @@ RUN apt update -y \
     && apt upgrade -y \
     && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux -y \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
+    && pip install jupyterlab \
+    && pip install jupyterlab-language-pack-zh-CN \
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
 
