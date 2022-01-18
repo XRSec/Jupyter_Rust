@@ -11,8 +11,7 @@
 ```bash
 # GET FILE
 docker run -it -d --name jupyter --rm xrsec/jupyter_rust:latest
-docker cp jupyter:/root/notebook /docker/
-mv /docker/notebook /docker/jupyter
+docker cp jupyter:/root/notebook /docker/jupyter
 docker stop jupyter
 
 docker run -it -d \
