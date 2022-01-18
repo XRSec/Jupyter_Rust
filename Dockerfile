@@ -11,6 +11,7 @@ RUN cd /root/ \
 WORKDIR /root/notebook
 
 COPY jupyter.sh /
+COPY README.ipynb /root/notebook/
 
 RUN apt update -y \
     && apt upgrade -y \
