@@ -14,7 +14,7 @@ COPY jupyter.sh /
 
 RUN apt update -y \
     && apt upgrade -y \
-    && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales -y \
+    && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux -y \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
@@ -30,6 +30,13 @@ RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
     && sudo locale-gen \
     && chmod +x /jupyter.sh
+    
+RUN chsh -s /bin/zsh \
+    && zsh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
+    && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
+    && git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+    && sed -i "s/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions docker kubectl brew golang history nmap node npm pip pipenv pyenv pylint python screen sublime)/g" ~/.zshrc
+
 
 ENTRYPOINT [ "/jupyter.sh"]
 
