@@ -17,12 +17,14 @@ RUN apt update -y \
     && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales -y \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
     && apt clean -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && rustup component add rust-src \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN rustup component add rust-src \
     && cargo install evcxr_jupyter cargo-edit \
     && evcxr_jupyter --install \
-    && jupyter notebook --generate-config \
-    && sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
+    && jupyter notebook --generate-config
+
+RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
