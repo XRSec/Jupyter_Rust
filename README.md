@@ -3,6 +3,8 @@
 ![version](https://img.shields.io/badge/Date-2022_01_18-da282a) [![Docker Automated Build](https://img.shields.io/docker/automated/xrsec/jupyter_rust?label=Build&logo=docker&style=flat-square)](https://hub.docker.com/r/xrsec/jupyter_rust) [![Jupyter Docker Build](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml/badge.svg)](https://github.com/XRSec/Jupyter_Rust/actions/workflows/jupyter.yml) [![version](https://img.shields.io/badge/From-google/evcxr-da282a)](https://github.com/google/evcxr)
 
 - use [google/evcxr](https://github.com/google/evcxr)
+- use [ohmyz.sh/](https://gist.github.com/XRSec/0e47c9b793887d201bab9de2a07a740c)
+- enable plug：`git zsh-syntax-highlighting zsh-autosuggestions docker kubectl brew golang history nmap node npm pip pipenv pyenv pylint python screen sublime`
 
 ## Run
 
@@ -10,15 +12,17 @@
 docker run -it -d \
 --restart=always \
 --name jupyter \
--v "/docker/jupyter:/root" \
+-v "/docker/jupyter:/root/notebook" \
 -p 8888:8888 \
 xrsec/jupyter_rust
 
 # Get Tocken
 docker logs jupyter
+# Ather Setting
+click jupyter/upyter_notebook_config.py
 ```
 
-<hr>
+<hr> 
 
 # EvCxR Jupyter Kernel
 
