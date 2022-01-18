@@ -14,13 +14,8 @@ docker run -it -d \
 -p 8888:8888 \
 xrsec/jupyter_rust
 
-# set password
-docker exec -it jupyter bash
-jupyter notebook password
-cat /root/.jupyter/jupyter_notebook_config.json | grep password | cut -d '"' -f 4
-exit
-# Please edit /docker/jupyter/.jupyter/jupyter_notebook_config.py & find # c.NotebookApp.password = ''
-# like argon2:$argon2id$v=19$m=10240,t=10,p=8$nadwnNYR9dgtditxunWZZg$+A5BGw7JriYU3Y2yOOw4YA
+# Get Tocken
+docker logs jupyter
 ```
 
 <hr>
