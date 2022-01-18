@@ -15,10 +15,10 @@ COPY README.ipynb /root/notebook/
 
 RUN apt update -y \
     && apt upgrade -y \
-    && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux -y \
+    && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux python3-pip -y \
     && ln -s /usr/bin/pip3 /usr/bin/pip \
-    && /usr/bin/pip install jupyterlab \
-    && /usr/bin/pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
+    && pip install jupyterlab \
+    && pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
     && apt clean -y \
     && rm -rf /var/lib/apt/lists/*
 
