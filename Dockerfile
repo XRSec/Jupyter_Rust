@@ -94,7 +94,8 @@ RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.
     && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.terminado_settings = {}|c.NotebookApp.terminado_settings = {'shell_command': ['/bin/zsh']}|g" /root/.jupyter/jupyter_notebook_config.py \
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
-    && sudo locale-gen
+    && sudo locale-gen \
+    && ln -sf /root/.jupyter/ /root/notebook/.jupyter
 
 # ZSH
 RUN curl -s https://mirror.ghproxy.com/https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/e832430bfe70e6960cf583e0b1b00ab5c22cd15e/zsh_init.sh | bash || echo "ok!"
