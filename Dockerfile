@@ -76,8 +76,8 @@ RUN echo "export PATH=\$PATH:/root/go/bin/" >> /root/.bashrc \
 # Rust
 RUN /root/.cargo/bin/rustup component add rust-src \
     && /root/.cargo/bin/cargo install evcxr_jupyter cargo-edit \
-    && evcxr_jupyter --install \
-    &&  --generate-config notebook --generate-config \
+    && /root/.cargo/bin/evcxr_jupyter --install \
+    && jupyter notebook --generate-config \
     && jupyter contrib nbextension install
 
 # Go
