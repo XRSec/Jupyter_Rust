@@ -74,7 +74,7 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                  "text": "",
+                  "text": "${GITHUB_REPOSITORY##*/} Update Success!",
                   "title": "${GITHUB_REPOSITORY##*/} Update Success!",
                   "picUrl": "",
                   "messageUrl": "{{ GITHUB_SERVER_URL }}/{{ GITHUB_REPOSITORY }}/"
