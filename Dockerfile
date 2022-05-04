@@ -14,6 +14,7 @@ COPY README.ipynb /root/notebook/
 # INIT
 RUN apt-get -qq update \
     && apt-get -qq upgrade \
+    && apt-get -qq install apt-utils \
     && apt-get -qq install \
         tzdata \
         locales \
@@ -53,8 +54,6 @@ RUN apt-get -qq install \
     && go install github.com/go-delve/delve/cmd/dlv@latest \
     && go install honnef.co/go/tools/cmd/staticcheck@latest \
     && go install golang.org/x/tools/gopls@latest \
-    && echo "export PATH=\$PATH:/root/go/bin/" >> /root/.bashrc \
-    && export PATH="$PATH:/root/go/bin/" \
     # PIP
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
     && pip install jupyterlab \
@@ -62,6 +61,13 @@ RUN apt-get -qq install \
     && rm -rf /var/lib/apt/lists/* \
     # RUST
     && bash <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y
+
+# ENV
+RUN echo "export PATH=\$PATH:/root/go/bin/" >> /root/.bashrc \
+    && echo "export PATH=\$PATH:$HOME/.cargo/bin" >> /root/.bashrc \
+    && export PATH="$PATH:/root/go/bin/" \
+    && export PATH="$PATH:$HOME/.cargo/bin" \
+    && echo "$PATH"
 
 # Rust
 RUN rustup component add rust-src \
