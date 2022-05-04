@@ -64,41 +64,44 @@ RUN apt-get -qq install \
     && pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
     && rm -rf /var/lib/apt/lists/* \
     # RUST
-    && bash <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y
+    && bash <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y \
+    # ZSH
+    && curl -s https://mirror.ghproxy.com/https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/e832430bfe70e6960cf583e0b1b00ab5c22cd15e/zsh_init.sh | bash || echo "ok!" 
 
 # ENV
-RUN echo "export PATH=\$PATH:/root/go/bin/" >> /root/.bashrc \
-    && echo "export PATH=\$PATH:$HOME/.cargo/bin" >> /root/.bashrc \
-    && export PATH="\$PATH:/root/go/bin/" \
-    && export PATH="\$PATH:$HOME/.cargo/bin" \
+RUN echo 'export PATH="$PATH:$HOME/go/bin/"' >> /root/.bashrc \
+    && echo 'export PATH="$PATH:$HOME/go/bin/"' >> /root/.zshrc \
+    && echo 'export PATH="$PATH:$HOME/.cargo/bin/"' >> /root/.bashrc \
+    && echo 'export PATH="$PATH:$HOME/.cargo/bin/"' >> /root/.zshrc \
+    && export PATH="\$PATH:\$HOME/go/bin/" \
+    && export PATH="\$PATH:\$HOME/.cargo/bin/" \
     && echo "$PATH"
 
-# Rust
+# Rust Kernel Config
 RUN /root/.cargo/bin/rustup component add rust-src \
     && /root/.cargo/bin/cargo install evcxr_jupyter cargo-edit \
     && /root/.cargo/bin/evcxr_jupyter --install \
     && jupyter notebook --generate-config \
-    && jupyter contrib nbextension install
+    && jupyter contrib nbextension install \
+    && cargo init /root/notebook
 
-# Go
+# Go Kernel Config
 RUN env GO111MODULE=on go install github.com/gopherdata/gophernotes@latest \
     && mkdir -p ~/.local/share/jupyter/kernels/gophernotes \
     && cd ~/.local/share/jupyter/kernels/gophernotes \
     && cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v0.7.4/kernel/*  "." \
-    && chmod +w ./kernel.json # in case copied kernel.json has no write permission \
-    && sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" < kernel.json.in > kernel.json
+    && chmod +w ./kernel.json \
+    && sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" < kernel.json.in > kernel.json \
+    && cd /root/notebook \
+    && go mod init notebook
 
-# Jupyter
+# Jupyter Set Config
 RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.terminado_settings = {}|c.NotebookApp.terminado_settings = {'shell_command': ['/bin/zsh']}|g" /root/.jupyter/jupyter_notebook_config.py \
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
-    && sudo locale-gen \
-    && ln -sf /root/.jupyter/ /root/notebook/.jupyter
-
-# ZSH
-RUN curl -s https://mirror.ghproxy.com/https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/e832430bfe70e6960cf583e0b1b00ab5c22cd15e/zsh_init.sh | bash || echo "ok!"
+    && sudo locale-gen  
 
 EXPOSE 8888
 ENV TZ='Asia/Shanghai'

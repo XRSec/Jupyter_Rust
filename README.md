@@ -15,6 +15,8 @@ docker run -it -d --name jupyter --rm xrsec/jupyter:latest
 docker cp jupyter:/root/notebook /docker/jupyter
 docker stop jupyter
 
+# RUN
+
 docker run -it -d \
   --restart=always \
   --name jupyter \
@@ -25,5 +27,8 @@ docker run -it -d \
 # Get Tocken
 docker logs jupyter
 # Ather Setting
-click web:jupyter/upyter_notebook_config.py
+## jupyter => new => terminals
+cp /root/.jupyter/jupyter_notebook_config.py /root/notebook/jupyter_notebook_config.py
+## Edit & Save
+cp -rf /root/notebook/jupyter_notebook_config.py /root/.jupyter/jupyter_notebook_config.py
 ```
