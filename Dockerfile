@@ -81,7 +81,7 @@ RUN /root/.cargo/bin/rustup component add rust-src \
     && jupyter contrib nbextension install
 
 # Go
-RUN env GO111MODULE=on go get github.com/gopherdata/gophernotes \
+RUN env GO111MODULE=on go install github.com/gopherdata/gophernotes@latest \
     && mkdir -p ~/.local/share/jupyter/kernels/gophernotes \
     && cd ~/.local/share/jupyter/kernels/gophernotes \
     && cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v0.7.4/kernel/*  "." \
