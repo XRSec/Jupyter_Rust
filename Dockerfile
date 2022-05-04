@@ -1,49 +1,92 @@
-FROM rust:latest
+FROM ubuntu:latest
 LABEL maintainer="xrsec"
 LABEL mail="troy@zygd.site"
-LABEL Github="https://github.com/XRSec/Jupyter_Rust"
-LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter_Rust"
-LABEL org.opencontainers.image.title="Jupyter_Rust"
+LABEL Github="https://github.com/XRSec/"
+LABEL org.opencontainers.image.source="https://github.com/XRSec/"
+LABEL org.opencontainers.image.title="Jupyter"
 
-RUN cd /root/ \
-    && cargo new notebook
-
+RUN mkdir /root/notebook
 WORKDIR /root/notebook
+ENV TZ Asia/Shanghai
 
-COPY jupyter.sh /
 COPY README.ipynb /root/notebook/
 
-RUN apt update -y \
-    && apt upgrade -y \
-    && apt-get install sudo fonts-droid-fallback ttf-wqy-zenhei ttf-wqy-microhei fonts-arphic-ukai fonts-arphic-uming ncurses-bin unzip jupyter-notebook cmake build-essential locales zsh git util-linux python3-pip -y \
+# INIT
+RUN apt-get -qq update \
+    && apt-get -qq upgrade \
+    && apt-get -qq install \
+        tzdata \
+        locales \
+    && ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime \
+    && echo "${TZ}" > /etc/timezone
+
+RUN apt-get -qq install \
+        fonts-droid-fallback \
+        ttf-wqy-zenhei \
+        ttf-wqy-microhei \
+        fonts-arphic-ukai \
+        fonts-arphic-uming \
+        language-pack-zh-hans \
+        ncurses-bin \
+        unzip \
+        cmake \
+        build-essential \
+        zsh \
+        git \
+        curl \
+        sudo \
+        util-linux \
+        apt-transport-https \
+        ca-certificates \
+        # JUPYTER
+        jupyter-notebook \
+        python3-pip \
+        # Golang
+        golang \
+    && apt-get -qq clean \
+    # GOLANG
+    && go install github.com/cweill/gotests/gotests@latest \
+    && go install github.com/fatih/gomodifytags@latest \
+    && go install github.com/josharian/impl@latest \
+    && go install github.com/haya14busa/goplay/cmd/goplay@latest \
+    && go install github.com/go-delve/delve/cmd/dlv@latest \
+    && go install honnef.co/go/tools/cmd/staticcheck@latest \
+    && go install golang.org/x/tools/gopls@latest \
+    && echo "export PATH=\$PATH:/root/go/bin" >> /root/.bashrc
+    && source ~/.bashrc \
+    # PIP
     && ln -sf /usr/bin/pip3 /usr/bin/pip \
     && pip install jupyterlab \
     && pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
-    && apt clean -y \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    # RUST
+    && curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
 
+# Rust
 RUN rustup component add rust-src \
     && cargo install evcxr_jupyter cargo-edit \
     && evcxr_jupyter --install \
     && jupyter notebook --generate-config \
     && jupyter contrib nbextension install
 
+# Go
+RUN env GO111MODULE=on go get github.com/gopherdata/gophernotes \
+    && mkdir -p ~/.local/share/jupyter/kernels/gophernotes \
+    && cd ~/.local/share/jupyter/kernels/gophernotes \
+    && cp "$(go env GOPATH)"/pkg/mod/github.com/gopherdata/gophernotes@v0.7.4/kernel/*  "." \
+    && chmod +w ./kernel.json # in case copied kernel.json has no write permission \
+    && sed "s|gophernotes|$(go env GOPATH)/bin/gophernotes|" < kernel.json.in > kernel.json
+
+# Jupyter
 RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.allow_remote_access = False|c.NotebookApp.allow_remote_access = True|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.terminado_settings = {}|c.NotebookApp.terminado_settings = {'shell_command': ['/bin/zsh']}|g" /root/.jupyter/jupyter_notebook_config.py \
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
-    && sudo locale-gen \
-    && chmod +x /jupyter.sh
-    
-RUN chsh -s /bin/zsh \
-    && zsh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)" \
-    && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
-    && git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
-    && sed -i "s/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions docker kubectl brew golang history nmap node npm pip pipenv pyenv pylint python screen sublime)/g" ~/.zshrc \
-    && ln -s /root/.jupyter /root/notebook/jupyter_setting
+    && sudo locale-gen
 
-ENTRYPOINT [ "/jupyter.sh"]
+# ZSH
+RUN curl -s https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/f69344ffc89fd5319cb3aecbb36116ed6c31543e/zsh_init.sh | bash -
 
 EXPOSE 8888
 ENV TZ='Asia/Shanghai'
@@ -51,4 +94,4 @@ ENV LANG 'zh_CN.UTF-8'
 ENV CARGO_HOME=/root/.local/lib/cargo
 STOPSIGNAL SIGQUIT
 
-CMD ["/jupyter.sh"]
+CMD [ "/usr/bin/jupyter-notebook", "--no-browser", "--allow-root", "--ip=0.0.0.0", "--config=/root/.jupyter/jupyter_notebook_config.py"]

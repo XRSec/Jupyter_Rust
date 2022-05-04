@@ -2,8 +2,13 @@ name: Jupyter Docker Build
 
 on:
   workflow_dispatch:
-  repository_dispatch:
-    types: [Jupyter_Update_Action]
+  # repository_dispatch:
+  #   types: [Jupyter_Update_Action]
+  ·watch:
+    types: [started]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 0 1 * *'
 
 jobs:
   Jupyter_Docker_Build:
