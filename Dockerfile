@@ -97,7 +97,7 @@ RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.
     && sudo locale-gen
 
 # ZSH
-RUN curl -s https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/f69344ffc89fd5319cb3aecbb36116ed6c31543e/zsh_init.sh | bash
+RUN curl -s https://mirror.ghproxy.com/https://gist.githubusercontent.com/XRSec/0e47c9b793887d201bab9de2a07a740c/raw/e832430bfe70e6960cf583e0b1b00ab5c22cd15e/zsh_init.sh | bash || echo "ok!"
 
 EXPOSE 8888
 ENV TZ='Asia/Shanghai'
