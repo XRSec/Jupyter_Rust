@@ -83,7 +83,7 @@ RUN /root/.cargo/bin/rustup component add rust-src \
     && /root/.cargo/bin/evcxr_jupyter --install \
     && jupyter notebook --generate-config \
     && jupyter contrib nbextension install \
-    && cargo init /root/notebook
+    && /root/.cargo/bin/cargo init /root/notebook
 
 # Go Kernel Config
 RUN env GO111MODULE=on go install github.com/gopherdata/gophernotes@latest \
