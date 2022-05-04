@@ -8,6 +8,7 @@ LABEL org.opencontainers.image.title="Jupyter"
 RUN mkdir /root/notebook
 WORKDIR /root/notebook
 ENV TZ Asia/Shanghai
+SHELL [ "/bin/bash" , "-c" ]
 
 COPY README.ipynb /root/notebook/
 
@@ -33,6 +34,9 @@ RUN apt-get -qq install \
         unzip \
         cmake \
         build-essential \
+        gcc \
+        libssl-dev \
+        pkg-config \
         zsh \
         git \
         curl \
@@ -65,8 +69,8 @@ RUN apt-get -qq install \
 # ENV
 RUN echo "export PATH=\$PATH:/root/go/bin/" >> /root/.bashrc \
     && echo "export PATH=\$PATH:$HOME/.cargo/bin" >> /root/.bashrc \
-    && export PATH="$PATH:/root/go/bin/" \
-    && export PATH="$PATH:$HOME/.cargo/bin" \
+    && export PATH="\$PATH:/root/go/bin/" \
+    && export PATH="\$PATH:$HOME/.cargo/bin" \
     && echo "$PATH"
 
 # Rust
