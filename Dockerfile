@@ -18,7 +18,8 @@ RUN apt-get -qq update \
         tzdata \
         locales \
     && ln -sf "/usr/share/zoneinfo/${TZ}" /etc/localtime \
-    && echo "${TZ}" > /etc/timezone
+    && echo "${TZ}" > /etc/timezone \
+    && ln -sf "$(which bash)" "$(which sh)"
 
 RUN apt-get -qq install \
         fonts-droid-fallback \
