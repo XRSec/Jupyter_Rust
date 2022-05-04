@@ -60,7 +60,7 @@ RUN apt-get -qq install \
     && pip install jupyterlab-language-pack-zh-CN jupyter_contrib_nbextensions \
     && rm -rf /var/lib/apt/lists/* \
     # RUST
-    && sh <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y
+    && bash <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y
 
 # Rust
 RUN rustup component add rust-src \
