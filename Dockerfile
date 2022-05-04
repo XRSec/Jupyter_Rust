@@ -1,8 +1,8 @@
 FROM ubuntu:latest
 LABEL maintainer="xrsec"
 LABEL mail="troy@zygd.site"
-LABEL Github="https://github.com/XRSec/"
-LABEL org.opencontainers.image.source="https://github.com/XRSec/"
+LABEL Github="https://github.com/XRSec/Jupyter"
+LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter"
 LABEL org.opencontainers.image.title="Jupyter"
 
 RUN mkdir /root/notebook
