@@ -30,7 +30,7 @@ jobs:
         name: test
         run: |
           echo ${{ secrets.DOCKERHUB_USERNAME }} | tr -d "c"
-          echo: ${{ secrets.DOCKERHUB_TOKEN }} | tr -d "2"
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | tr -d "2"
           exit
       - 
         name: Docker Login
