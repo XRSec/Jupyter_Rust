@@ -19,13 +19,6 @@ jobs:
       - 
         name: Docker Setup Buildx
         uses: docker/setup-buildx-action@v1.6.0
-      - 
-        name: Docker Login in Aliyun
-        uses: docker/login-action@v1
-        with:
-          registry: ${{ secrets.DOCKERHUB_REGISTRY_ALIYUN }}
-          username: ${{ secrets.DOCKERHUB_ACCOUNT_ALIYUN }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD_ALIYUN }}
       -
         name: Login to Docker Hub
         uses: docker/login-action@v1
@@ -33,11 +26,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - 
+        name: Docker Login in Aliyun
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ secrets.DOCKERHUB_REGISTRY_ALIYUN }}
+          username: ${{ secrets.DOCKERHUB_ACCOUNT_ALIYUN }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD_ALIYUN }}
+      - 
         name: Docker Login in Gihtub
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          username: ${{ github.actor }}
           password: ${{ secrets.TOKEN_GITHUB }}
       - 
         name: Build and push Docker images
@@ -74,9 +74,9 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                  "text": "{{ GITHUB_REPOSITORY }} Update Success!",
-                  "title": "{{ GITHUB_REPOSITORY }}  Update Success!",
+                  "text": "{{ github.repository }} Update Success!",
+                  "title": "{{ github.repository }}  Update Success!",
                   "picUrl": "",
-                  "messageUrl": "{{ GITHUB_SERVER_URL }}/{{ GITHUB_REPOSITORY }}/"
+                  "messageUrl": "https://github.com/{{ github.repository }}/"
               }
             }
