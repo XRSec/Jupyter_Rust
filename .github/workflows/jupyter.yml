@@ -74,9 +74,9 @@ jobs:
             {
               "msgtype": "link",
               "link": {
-                  "text": "{{ github.repository }} Update Success!",
-                  "title": "{{ github.repository }}  Update Success!",
+                  "text": "Jupyter Update Success!",
+                  "title": "Jupyter Update Success!",
                   "picUrl": "",
-                  "messageUrl": "https://github.com/{{ github.repository }}/"
+                  "messageUrl": "https://jupyters.vercel.app/"
               }
             }
