@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 LABEL maintainer="xrsec"
-LABEL mail="troy@zygd.site"
+LABEL mail="Jalapeno1868@outlook.com"
 LABEL Github="https://github.com/XRSec/Jupyter"
 LABEL org.opencontainers.image.source="https://github.com/XRSec/Jupyter"
 LABEL org.opencontainers.image.title="Jupyter"
@@ -101,7 +101,7 @@ RUN sed -i "s|# c.NotebookApp.ip = 'localhost'|c.NotebookApp.ip = '*'|g" /root/.
     && sed -i "s|# c.NotebookApp.notebook_dir = ''|c.NotebookApp.notebook_dir = '/root/notebook'|g" /root/.jupyter/jupyter_notebook_config.py \
     && sed -i "s|# c.NotebookApp.terminado_settings = {}|c.NotebookApp.terminado_settings = {'shell_command': ['/bin/zsh']}|g" /root/.jupyter/jupyter_notebook_config.py \
     && echo "zh_CN.UTF-8 UTF-8" > /etc/locale.gen \
-    && sudo locale-gen  
+    && sudo locale-gen
 
 EXPOSE 8888
 ENV TZ='Asia/Shanghai'
