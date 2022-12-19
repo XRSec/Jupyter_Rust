@@ -66,7 +66,7 @@ RUN apt-get -qq install \
     # RUST
     && bash <(curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf) -y \
     # ZSH
-    && curl -s https://mirror.ghproxy.com/https://gist.githubusercontent.com/Ran-Xing/0e47c9b793887d201bab9de2a07a740c/raw/7f355da68c3d6d1e3fc3da55b6251d9a65b72597/zsh_init.sh | bash || echo "ok!"
+    && curl -s https://gist.githubusercontent.com/Ran-Xing/0e47c9b793887d201bab9de2a07a740c/raw/3a63ca4fe9b775c5a8e141f05ddb35cc1ea09334/zsh_init.sh | bash || echo "ok!"
 
 # ENV
 RUN echo 'export PATH="$PATH:$HOME/go/bin/"' >> /root/.bashrc \
